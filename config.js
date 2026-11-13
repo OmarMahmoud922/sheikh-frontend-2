@@ -1,10 +1,9 @@
 // ============================================================================
 // إعداد ربط الواجهة (GitHub Pages) بالخادم الخلفي (Vercel FastAPI)
-// غيّر رابط vercelBackendUrl إلى رابط مشروعك على Vercel بعد رفعه.
 // ============================================================================
 (function () {
-  var vercelBackendUrl = "sheikh-backend-2-ljwh.vercel.app";
-  
+  var vercelBackendUrl = "https://sheikh-backend-2-ljwh.vercel.app";
+
   var host = window.location.hostname;
   var isLocalOrPreview =
     host === "localhost" ||
@@ -23,6 +22,6 @@
 
   window.PLATFORM_CONFIG = {
     API_BASE_URL: apiBase,
-    VERCEL_PLACEHOLDER: "sheikh-backend-2-ljwh.vercel.app"
+    VERCEL_PLACEHOLDER: "https://YOUR-BACKEND-NAME.vercel.app"
   };
 })();
