@@ -3,8 +3,8 @@
 // غيّر رابط vercelBackendUrl إلى رابط مشروعك على Vercel بعد رفعه.
 // ============================================================================
 (function () {
-  var vercelBackendUrl = "https://sheikh-backend.vercel.app";
-
+  var vercelBackendUrl = "https://your-backend.vercel.app";
+  
   var host = window.location.hostname;
   var isLocalOrPreview =
     host === "localhost" ||
