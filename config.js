@@ -3,7 +3,7 @@
 // غيّر رابط vercelBackendUrl إلى رابط مشروعك على Vercel بعد رفعه.
 // ============================================================================
 (function () {
-  var vercelBackendUrl = "sheikh-backend-2-ljwh-hq0hlnnes-omar-alamin.vercel.app";
+  var vercelBackendUrl = "sheikh-backend-2-ljwh.vercel.app";
   
   var host = window.location.hostname;
   var isLocalOrPreview =
@@ -23,6 +23,6 @@
 
   window.PLATFORM_CONFIG = {
     API_BASE_URL: apiBase,
-    VERCEL_PLACEHOLDER: "sheikh-backend-2-ljwh-hq0hlnnes-omar-alamin.vercel.app"
+    VERCEL_PLACEHOLDER: "sheikh-backend-2-ljwh.vercel.app"
   };
 })();
