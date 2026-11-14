@@ -6,29 +6,24 @@ window.Platform.Pages.courseDetail = async function (root, ctx, slug) {
   var I = window.Platform.Icons;
   var C = window.Platform.Components;
   var Api = window.Platform.Api;
+  var GS = window.Platform.GuestSchedule;
 
   var data = await Api.get("/api/courses/" + encodeURIComponent(slug));
   var c = data.course;
   var st = U.statusLabel(c.status);
-  var completedSet = new Set(data.completedLessonIds || []);
+  var isEnrolled = GS.isEnrolled(c.id);
+  var completedSet = new Set(GS.getCompletedLessonIds(c.id));
   var cover = U.resolveAssetUrl(c.coverImage);
   var introLinkSafe = U.safeUrl(c.introLink);
 
-  var actionArea = "";
-  if (!ctx.user) {
-    actionArea =
-      '<a href="#/register" class="btn btn-gold">سجّل للاشتراك والمتابعة اليومية</a> ' +
-      '<a href="#/login" class="btn btn-outline">لدي حساب بالفعل</a>';
-  } else if (ctx.user.role === "admin") {
-    actionArea = '<a href="#/admin" class="btn btn-outline">تعديل الدورة من لوحة الإدارة</a>';
-  } else if (data.isEnrolled) {
-    actionArea =
-      '<a href="#/dashboard" class="btn btn-primary">' +
+  var actionArea = isEnrolled
+    ? '<a href="#/dashboard" class="btn btn-primary">' +
       I.check +
-      " أنت مشترك — افتح جدولك اليومي</a>";
-  } else {
-    actionArea =
-      '<button type="button" id="enroll-course-btn" class="btn btn-gold">اشترك في الدورة وابدأ الجدول اليومي</button>';
+      " مضافة في جدولك — عرض جدول المتابعة</a>"
+    : '<button type="button" id="enroll-course-btn" class="btn btn-gold">إضافة الدورة لجدول المتابعة (كضيف)</button>';
+
+  if (ctx.user && ctx.user.role === "admin") {
+    actionArea += ' <a href="#/admin" class="btn btn-outline">تعديل الدورة من لوحة الإدارة</a>';
   }
 
   var lessonsHtml = (data.lessons || [])
@@ -122,16 +117,10 @@ window.Platform.Pages.courseDetail = async function (root, ctx, slug) {
 
   var enrollBtn = document.getElementById("enroll-course-btn");
   if (enrollBtn) {
-    enrollBtn.addEventListener("click", async function () {
-      enrollBtn.disabled = true;
-      try {
-        await Api.post("/api/student/enroll", { courseId: c.id });
-        U.toast("تم اشتراكك في الدورة وتجهيز جدولك اليومي بنجاح.");
-        window.location.hash = "#/dashboard";
-      } catch (err) {
-        U.toast(err.message, "error");
-        enrollBtn.disabled = false;
-      }
+    enrollBtn.addEventListener("click", function () {
+      GS.enrollCourse(c, data.lessons || []);
+      U.toast("تمت إضافة الدورة إلى جدول المتابعة الخاص بك (كضيف).");
+      window.location.hash = "#/dashboard";
     });
   }
 
