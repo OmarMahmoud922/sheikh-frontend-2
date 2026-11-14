@@ -66,6 +66,11 @@ window.Platform.Pages.lessonDetail = async function (root, ctx, lessonId) {
     })
     .join("");
 
+  var isGuestCompleted =
+    window.Platform.GuestSchedule &&
+    window.Platform.GuestSchedule.getCompletedLessonIds(course.id).indexOf(Number(l.id)) !== -1;
+  var isCompleted = Boolean(data.isCompleted || isGuestCompleted);
+
   root.innerHTML =
     '<div class="container section page-enter">' +
     '<div style="margin-bottom:16px;font-size:0.9rem;color:var(--ink-muted);">' +
@@ -85,7 +90,7 @@ window.Platform.Pages.lessonDetail = async function (root, ctx, lessonId) {
     " من " +
     data.totalLessons +
     "</span>" +
-    (data.isCompleted ? '<span class="badge badge-gold">' + I.check + " تم الاستماع</span>" : "") +
+    (isCompleted ? '<span class="badge badge-gold">' + I.check + " تم الاستماع</span>" : "") +
     "</div>" +
     '<h1 style="font-size:clamp(1.45rem,2.5vw,2rem);color:var(--emerald-900);margin-bottom:18px;">' +
     U.escapeHtml(l.title) +
